@@ -16,12 +16,13 @@ import {
 import type { Category, Item, ItemKind, BaseUnit, Supplier } from '@/lib/database.types'
 import { useI18n } from '@/i18n'
 import { toast } from '@/lib/toast'
-import { Plus, Trash2, CreditCard as Edit3, X, Check, ChevronRight, ChevronDown, Package, Folder } from 'lucide-react'
+import { Plus, Trash2, CreditCard as Edit3, X, Check, ChevronRight, ChevronDown, Package, Folder, Search } from 'lucide-react'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { ErrorState } from '@/components/ErrorState'
 import { friendlyMessage, friendlyMessage as errorMessage } from '@/lib/errors'
 import { useLiveRefresh } from '@/lib/realtime'
 import { unitLabel } from '@/lib/format'
+import { useCatalogName } from '@/modules/core/useCatalogName'
 
 const baseUnitOptions: BaseUnit[] = ['pcs', 'g', 'ml']
 
@@ -41,6 +42,7 @@ function formatCoef(v: number): string {
 
 export function CatalogPage() {
   const { t, n } = useI18n()
+  const { categoryName, itemName, matches } = useCatalogName()
   const kindLabels: Record<ItemKind, string> = {
     asset: t.admin.catalog.kindAsset,
     consumable: t.admin.catalog.kindConsumable,
