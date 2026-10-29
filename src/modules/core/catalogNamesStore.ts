@@ -11,7 +11,7 @@ interface CatalogNamesStore {
 
 const emptyIndex: NameIndex = { items: new Map(), categories: new Map() }
 
-export const useCatalogNames = create<CatalogNamesStore>((set, get) => ({
+export const useCatalogNames = create<CatalogNamesStore>((set) => ({
   index: emptyIndex,
   loaded: false,
 
@@ -23,16 +23,14 @@ export const useCatalogNames = create<CatalogNamesStore>((set, get) => ({
             supabase
               .from('items')
               .select('name,name_en,name_ar')
-              .range(from, to)
-              .limit(5000),
+              .range(from, to),
         ),
         fetchAllPages<{ name: string; name_en: string | null; name_ar: string | null }>(
           (from, to) =>
             supabase
               .from('categories')
               .select('name,name_en,name_ar')
-              .range(from, to)
-              .limit(5000),
+              .range(from, to),
         ),
       ])
       const index = buildNameIndex(items, categories)

@@ -1176,9 +1176,12 @@ export async function createCategory(params: {
 }
 
 export async function updateCategory(id: number, patch: Partial<Pick<Category, 'name' | 'name_en' | 'name_ar' | 'kind' | 'sort' | 'tenant_coef'>>): Promise<void> {
-  const { tenant_coef: tenantCoef, name_en: nameEn, name_ar: nameAr, ...rest } = patch
-  if (nameEn !== undefined) rest.name_en = nameEn?.trim() || null
-  if (nameAr !== undefined) rest.name_ar = nameAr?.trim() || null
+  const { tenant_coef: tenantCoef, name_en: nameEn, name_ar: nameAr, ...base } = patch
+  const rest = {
+    ...base,
+    ...(nameEn !== undefined ? { name_en: nameEn?.trim() || null } : {}),
+    ...(nameAr !== undefined ? { name_ar: nameAr?.trim() || null } : {}),
+  }
   if (Object.keys(rest).length > 0) {
     const { error, status } = await supabase.from('categories').update(rest).eq('id', id)
     if (error) throw toApiError(error, status)
@@ -1252,9 +1255,12 @@ export async function createItem(params: {
 }
 
 export async function updateItem(id: number, patch: Partial<Pick<Item, 'name' | 'name_en' | 'name_ar' | 'category_id' | 'base_unit' | 'pack_size' | 'pack_label' | 'min_stock' | 'target_stock' | 'note' | 'default_cost' | 'sort' | 'track_on_hand' | 'active' | 'supplier_id' | 'tenant_coef'>>): Promise<void> {
-  const { tenant_coef: tenantCoef, name_en: nameEn, name_ar: nameAr, ...rest } = patch
-  if (nameEn !== undefined) rest.name_en = nameEn?.trim() || null
-  if (nameAr !== undefined) rest.name_ar = nameAr?.trim() || null
+  const { tenant_coef: tenantCoef, name_en: nameEn, name_ar: nameAr, ...base } = patch
+  const rest = {
+    ...base,
+    ...(nameEn !== undefined ? { name_en: nameEn?.trim() || null } : {}),
+    ...(nameAr !== undefined ? { name_ar: nameAr?.trim() || null } : {}),
+  }
   if (Object.keys(rest).length > 0) {
     const { error, status } = await supabase.from('items').update(rest).eq('id', id)
     if (error) throw toApiError(error, status)
